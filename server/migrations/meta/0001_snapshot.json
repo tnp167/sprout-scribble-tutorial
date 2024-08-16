@@ -1,6 +1,6 @@
 {
-  "id": "904c689f-8720-4fa3-a080-18772a011cb1",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "18f2775a-427b-40df-8518-fc0f185bbe53",
+  "prevId": "904c689f-8720-4fa3-a080-18772a011cb1",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -135,6 +135,21 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "twoFactorEnabled": {
+          "name": "twoFactorEnabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "roles": {
+          "name": "roles",
+          "type": "roles",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'user'"
         }
       },
       "indexes": {},

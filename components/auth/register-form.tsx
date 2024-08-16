@@ -12,42 +12,65 @@ import {
 } from "@/components/ui/form";
 import { AuthCard } from "./auth-card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "@/types/login-schema";
+import { RegisterSchema } from "@/types/register-schema";
 import { z } from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { emailSignIn } from "@/server/actions/email-signin";
 import { useAction } from "next-safe-action/hook";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { emailRegister } from "@/server/actions/email-register";
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const form = useForm({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
   const [error, setError] = useState("");
-  const { execute, status } = useAction(emailSignIn, {
-    onSuccess(data) {},
+  const { execute, status } = useAction(emailRegister, {
+    onSuccess(data) {
+      if (data?.success) {
+        console.log(data.success);
+      }
+    },
   });
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     execute(values);
   };
   return (
     <AuthCard
-      cardTitle="Welcome back!"
-      backButtonHref="/auth/register"
-      backButtonLabel="Create a new account"
+      cardTitle="Create an account"
+      backButtonHref="/auth/login"
+      backButtonLabel="Already have an account? "
       showSocials
     >
       <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="developedbyed@gmail.com"
+                        type="text"
+                      />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"
@@ -97,7 +120,7 @@ export const LoginForm = () => {
                 status === "executing" ? "animate-pulse" : ""
               )}
             >
-              <span>Login</span>
+              Register
             </Button>
           </form>
         </Form>
