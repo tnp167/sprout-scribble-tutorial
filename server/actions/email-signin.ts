@@ -9,6 +9,8 @@ import { generateEmailVerificationToken } from "./tokens";
 import { sendVerificationEmail } from "./email";
 import { signIn } from "../auth";
 import { AuthError } from "next-auth";
+import { isRedirectError } from "next/dist/client/components/redirect";
+
 const action = createSafeActionClient();
 
 export const emailSignIn = action(
@@ -41,11 +43,15 @@ export const emailSignIn = action(
         password,
         redirect: false,
         // Fix redirect bug
-        //redirectTo: "/",
+        // redirectTo: "./",
       });
 
       return { success: "User Signed In!" };
     } catch (error) {
+      if (isRedirectError(error)) {
+        throw error;
+      }
+
       if (error instanceof AuthError) {
         switch (error.type) {
           case "AccessDenied":
@@ -58,7 +64,6 @@ export const emailSignIn = action(
             return { error: "Something went wrong" };
         }
       }
-      throw error;
     }
   }
 );
