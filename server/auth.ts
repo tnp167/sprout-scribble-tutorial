@@ -14,6 +14,44 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db),
   secret: process.env.AUTH_SECRET!,
   session: { strategy: "jwt" },
+  callbacks: {
+    async session({ session, token }: { session: any; token: any }) {
+      if (session && token.sub) {
+        session.user.id = token.sub;
+      }
+      if (session.user && token.role) {
+        session.user.role = token.role as string;
+      }
+      if (session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+        session.user.name = token.name;
+        session.user.email = token.email as string;
+        session.user.isOAuth = token.isOAuth as boolean;
+        session.user.image = token.image as string;
+      }
+      console.log(token);
+      return session;
+    },
+    async jwt({ token }: any) {
+      if (!token.sub) return token;
+      const exisitingUser = await db.query.users.findFirst({
+        where: eq(users.id, token.sub),
+      });
+      if (!exisitingUser) return token;
+      const exisitingAccount = await db.query.accounts.findFirst({
+        where: eq(accounts.userId, exisitingUser.id),
+      });
+
+      token.isOAuth = exisitingAccount;
+      token.name = exisitingUser.name;
+      token.email = exisitingUser.email;
+      token.role = exisitingUser.role;
+      token.isTwoFactorEnabled = exisitingUser.twoFactorEnabled;
+      token.image = exisitingUser.image;
+
+      return token;
+    },
+  },
   providers: [
     google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
