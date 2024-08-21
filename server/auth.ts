@@ -9,7 +9,6 @@ import { eq } from "drizzle-orm";
 import { accounts, users } from "./schema";
 const bcrypt = require("bcrypt");
 
-//@ts-ignore
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db),
   secret: process.env.AUTH_SECRET!,
@@ -29,7 +28,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.isOAuth = token.isOAuth as boolean;
         session.user.image = token.image as string;
       }
-      console.log(token);
       return session;
     },
     async jwt({ token }: any) {

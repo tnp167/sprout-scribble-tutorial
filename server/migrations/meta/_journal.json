@@ -57,6 +57,13 @@
       "when": 1723979378488,
       "tag": "0007_futuristic_naoko",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1724279492014,
+      "tag": "0008_violet_gladiator",
+      "breakpoints": true
     }
   ]
 }

@@ -28,14 +28,15 @@ import { Switch } from "@/components/ui/switch";
 import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-success";
 import { useState } from "react";
+import { useAction } from "next-safe-action/hook";
+import { settings } from "@/server/actions/settings";
 type SettingsForm = {
   session: Session;
 };
 export default function SettingsCard(session: SettingsForm) {
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [success, setSuccess] = useState<string | undefined>(undefined);
   const [avatarUploading, setAvatarUploading] = useState(false);
-  const status = "executing";
 
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
@@ -44,12 +45,24 @@ export default function SettingsCard(session: SettingsForm) {
       newPassword: undefined,
       name: session.session.user?.name || undefined,
       email: session.session.user?.email || undefined,
+      image: session.session.user?.image || undefined,
+      isTwoFactorEnabled: session.session.user?.isTwoFactorEnabled || undefined,
     },
   });
 
+  const { execute, status } = useAction(settings, {
+    onSuccess: (data) => {
+      if (data?.success) setSuccess(data.success);
+      if (data?.error) setError(data.error);
+    },
+    onError: () => {
+      setError("Somthing went wrong");
+    },
+  });
   const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
-    //executes(values);
+    execute(values);
   };
+
   return (
     <Card>
       <CardHeader>
@@ -62,6 +75,24 @@ export default function SettingsCard(session: SettingsForm) {
             <FormField
               control={form.control}
               name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="John Doe"
+                      disabled={status === "executing"}
+                      {...field}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="image"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Avatar</FormLabel>
@@ -94,34 +125,19 @@ export default function SettingsCard(session: SettingsForm) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="John Doe"
-                      disabled={status === "executing"}
-                      {...field}
-                    />
-                  </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
-              name="image"
+              name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="*********"
-                      disabled={status === "executing"}
+                      disabled={
+                        status === "executing" || session?.session.user.isOAuth
+                      }
                       {...field}
                     />
                   </FormControl>
@@ -131,14 +147,16 @@ export default function SettingsCard(session: SettingsForm) {
             />
             <FormField
               control={form.control}
-              name="image"
+              name="newPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>New Password</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="*********"
-                      disabled={status === "executing"}
+                      disabled={
+                        status === "executing" || session?.session.user.isOAuth
+                      }
                       {...field}
                     />
                   </FormControl>
@@ -157,15 +175,21 @@ export default function SettingsCard(session: SettingsForm) {
                     Enable two factor authentication for your account
                   </FormDescription>
                   <FormControl>
-                    <Switch disabled={status === "executing"} />
+                    <Switch
+                      disabled={
+                        status === "executing" || session.session.user?.isOAuth
+                      }
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
                   </FormControl>
 
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormError />
-            <FormSuccess />
+            <FormError message={error} />
+            <FormSuccess message={success} />
             <Button
               disabled={status === "executing" || avatarUploading}
               type="submit"
