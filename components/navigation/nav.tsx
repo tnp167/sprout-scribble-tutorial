@@ -3,14 +3,19 @@ import { UserButton } from "./user-button";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import Logo from "./logo";
 const nav = async () => {
   const session = await auth();
 
   return (
-    <header className="bg-slate-500 py-4">
+    <header className="py-12">
       <nav>
-        <ul className="flex justify-between">
-          <Link href="/"></Link>
+        <ul className="flex justify-between items-center">
+          <li>
+            <Link href="/" aria-label="sprout and scribble logo ">
+              <Logo />
+            </Link>
+          </li>
           {!session ? (
             <li>
               <Button asChild>
