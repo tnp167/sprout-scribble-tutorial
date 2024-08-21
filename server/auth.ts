@@ -6,9 +6,10 @@ import github from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import { LoginSchema } from "@/types/login-schema";
 import { eq } from "drizzle-orm";
-import { users } from "./schema";
+import { accounts, users } from "./schema";
 const bcrypt = require("bcrypt");
 
+//@ts-ignore
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db),
   secret: process.env.AUTH_SECRET!,

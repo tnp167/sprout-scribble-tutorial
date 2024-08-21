@@ -17,11 +17,12 @@ import { LogOut, Moon, Settings, Sun, TruckIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Switch } from "../ui/switch";
 import { set } from "zod";
+import { useRouter } from "next/navigation";
 
 export const UserButton = ({ user }: Session) => {
   const { setTheme, theme } = useTheme();
   const [checked, setChecked] = useState(false);
-
+  const router = useRouter();
   function setSwitchState() {
     switch (theme) {
       case "dark":
@@ -73,14 +74,20 @@ export const UserButton = ({ user }: Session) => {
             </span>
           </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="group py-2 font-medium cursor-pointer transition-all duration-500 ease-in-out">
+          <DropdownMenuItem
+            onClick={() => router.push("/dashboard/orders")}
+            className="group py-2 font-medium cursor-pointer"
+          >
             <TruckIcon
               size={14}
               className="mr-3 group-hover:translate-x-1 transition-all duration-300"
             />
             My orders
           </DropdownMenuItem>
-          <DropdownMenuItem className="group py-2 font-medium cursor-pointer transition-all duration-500 ease-in-out">
+          <DropdownMenuItem
+            onClick={() => router.push("/dashboard/settings")}
+            className="group py-2 font-medium cursor-pointer"
+          >
             <Settings
               size={14}
               className="mr-3 group-hover:rotate-180 transition-all duration-300"
@@ -88,18 +95,15 @@ export const UserButton = ({ user }: Session) => {
             Settings
           </DropdownMenuItem>
           {theme && (
-            <DropdownMenuItem className="py-2 font-medium cursor-pointer transition-all duration-500 ease-in-out">
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="flex items-center group"
-              >
+            <DropdownMenuItem className="py-2 font-medium cursor-pointer">
+              <div className="flex items-center group">
                 <div className="relative flex mr-3">
                   <Sun
                     className="group-hover:text-yellow-600 absolute group-hover:rotate-180 dark:scale-0 transition-all duration-500 ease-in-out"
                     size={14}
                   />
                   <Moon
-                    className="group-hover:text-blue-400 dark:scale-100 scale-0"
+                    className="group-hover:text-blue-400 dark:scale-100 scale-0 transition-all duration-500 ease-in-out"
                     size={14}
                   />
                 </div>
@@ -115,12 +119,13 @@ export const UserButton = ({ user }: Session) => {
                   if (e) setTheme("dark");
                   if (!e) setTheme("light");
                 }}
+                onClick={(e) => e.stopPropagation()}
               />
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
             onClick={() => signOut()}
-            className="mr-3 group focus:bg-destructive/30 transition-all duration-300"
+            className="mr-3 group focus:bg-destructive/30 "
           >
             <LogOut
               size={14}
