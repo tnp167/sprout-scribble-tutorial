@@ -39,14 +39,11 @@ export const UserButton = ({ user }: Session) => {
         <DropdownMenuTrigger>
           <Avatar>
             {user.image && user.name && (
-              <AvatarImage src={user.image} alt={user.name!}>
-                <Image
-                  src={user.image}
-                  alt={user.name!}
-                  fill={true}
-                  className="rounded-full"
-                />
-              </AvatarImage>
+              <AvatarImage
+                src={user.image}
+                alt={user.name!}
+                className="rounded-full"
+              />
             )}
             {!user.image && (
               <AvatarFallback className="bg-primary/10">
@@ -60,13 +57,7 @@ export const UserButton = ({ user }: Session) => {
         <DropdownMenuContent className="w-64 p-6" align="end">
           <div className="mb-4 p-4 flex flex-col items-center rounded-lg gap-1 bg-primary/25">
             {user.image && (
-              <Image
-                src={user.image}
-                alt={user.name!}
-                fill={true}
-                width={36}
-                height={36}
-              />
+              <Image src={user.image} alt={user.name!} width={36} height={36} />
             )}
             <p className="font-bold text-xs">{user.name}</p>
             <span className="text-xs font-medium text-secondary-foreground">
