@@ -24,6 +24,10 @@ import { Input } from "@/components/ui/input";
 import { PoundSterling } from "lucide-react";
 import Tiptap from "./tiptap";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hook";
+import { createProduct } from "@/server/actions/create-product";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 export default function ProductForm() {
   const form = useForm<zProductSchema>({
     resolver: zodResolver(ProductSchema),
@@ -32,7 +36,27 @@ export default function ProductForm() {
       description: "",
       price: 0,
     },
+    mode: "onChange",
   });
+
+  const router = useRouter();
+
+  const { execute, status } = useAction(createProduct, {
+    onSuccess: (data) => {
+      if (data?.error) toast.error(data.error);
+      if (data?.success) {
+        router.push("/dashboard/products");
+        toast.success(data.success);
+      }
+    },
+    onExecute: (data) => {
+      toast.loading("Creating Product");
+    },
+  });
+
+  async function onSubmit(values: zProductSchema) {
+    execute(values);
+  }
   return (
     <Card>
       <CardHeader>
@@ -41,7 +65,7 @@ export default function ProductForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={() => console.log("Hi")} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="title"
@@ -93,7 +117,15 @@ export default function ProductForm() {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">
+            <Button
+              disabled={
+                status === "executing" ||
+                !form.formState.isValid ||
+                !form.formState.isDirty
+              }
+              className="w-full"
+              type="submit"
+            >
               Submit
             </Button>
           </form>

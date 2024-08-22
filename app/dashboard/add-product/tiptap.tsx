@@ -29,13 +29,13 @@ const Tiptap = ({ value }: { value: string }) => {
         },
       }),
     ],
-    // onUpdate: ({ editor }) => {
-    //   const content = editor.getHTML();
-    //   setValue("description", content, {
-    //     shouldValidate: true,
-    //     shouldDirty: true,
-    //   });
-    // },
+    onUpdate: ({ editor }) => {
+      const content = editor.getHTML();
+      setValue("description", content, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    },
     editorProps: {
       attributes: {
         class:
