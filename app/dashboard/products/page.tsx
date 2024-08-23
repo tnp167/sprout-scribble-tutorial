@@ -13,7 +13,7 @@ export default async function Products() {
       id: product.id,
       title: product.title,
       price: product.price,
-      varaints: [],
+      variants: [],
       image: placeholder.src,
     };
   });
