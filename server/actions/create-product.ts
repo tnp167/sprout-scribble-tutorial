@@ -5,6 +5,7 @@ import { createSafeActionClient } from "next-safe-action";
 import { db } from "..";
 import { eq } from "drizzle-orm";
 import { products } from "../schema";
+import { revalidatePath } from "next/cache";
 
 const action = createSafeActionClient();
 
@@ -22,8 +23,9 @@ export const createProduct = action(
           .set({ description, price, title })
           .where(eq(products.id, id))
           .returning();
+        revalidatePath("/dashboard/products");
         return {
-          success: `Product ${editedProduct[0].title} has been created`,
+          success: `Product ${editedProduct[0].title} has been edited`,
         };
       }
       if (!id) {
