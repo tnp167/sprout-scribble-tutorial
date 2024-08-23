@@ -71,6 +71,20 @@
       "when": 1724334340796,
       "tag": "0009_material_molly_hayes",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1724434917563,
+      "tag": "0010_white_lilandra",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1724435023082,
+      "tag": "0011_mature_zaladane",
+      "breakpoints": true
     }
   ]
 }
