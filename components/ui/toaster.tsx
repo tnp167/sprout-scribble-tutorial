@@ -1,6 +1,6 @@
 "use client";
 
-import { Toaster as Toasty, toast } from "sonner";
+import { Toaster as Toasty } from "sonner";
 import { useTheme } from "next-themes";
 
 export default function Toaster() {
