@@ -25,8 +25,9 @@ import { VariantSchema } from "@/types/variant-schema";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InputTags } from "./input-tags";
+import VariantImages from "./variant-images";
 
-export default function ProductVariant({
+export const ProductVariant = ({
   editMode,
   productID,
   variant,
@@ -36,7 +37,7 @@ export default function ProductVariant({
   productID: number;
   variant?: VariantsWithImagesTags;
   children: React.ReactNode;
-}) {
+}) => {
   const form = useForm<z.infer<typeof VariantSchema>>({
     resolver: zodResolver(VariantSchema),
     defaultValues: {
@@ -57,7 +58,7 @@ export default function ProductVariant({
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-[640px] rounded-md">
         <DialogHeader>
           <DialogTitle>{editMode ? "Edit" : "Create"} your variant</DialogTitle>
         </DialogHeader>
@@ -83,7 +84,7 @@ export default function ProductVariant({
                 <FormItem>
                   <FormLabel>Variant Color</FormLabel>
                   <FormControl>
-                    <Input type="color" placeholder="Pick a title" {...field} />
+                    <Input type="color" placeholder="Pick a color" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,12 +97,13 @@ export default function ProductVariant({
                 <FormItem>
                   <FormLabel>Variant Tags</FormLabel>
                   <FormControl>
-                    <InputTags {...field} onChange={(e) => field.onChange(e)} />
+                    <InputTags {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <VariantImages />
             {editMode && variant && (
               <Button type="button">Delete Variant</Button>
             )}
@@ -113,4 +115,4 @@ export default function ProductVariant({
       </DialogContent>
     </Dialog>
   );
-}
+};

@@ -21,7 +21,7 @@ export const VariantSchema = z.object({
       size: z.number(),
       key: z.string().optional(),
       id: z.number().optional(),
-      mame: z.string(),
+      name: z.string(),
     })
   ),
 });

@@ -38,7 +38,7 @@ export const InputTags = ({ onChange, value, ...props }: InputTagsProps) => {
       )}
       onClick={() => setFocus("tags")}
     >
-      <motion.div className="rounded-md min-h-[2.5rem]  p-2 flex gap-2 flex-wrap items-center">
+      <div className="rounded-md min-h-[2.5rem]  p-2 flex gap-2 flex-wrap items-center">
         <AnimatePresence>
           {value.map((tag) => (
             <motion.div
@@ -86,7 +86,7 @@ export const InputTags = ({ onChange, value, ...props }: InputTagsProps) => {
             {...props}
           />
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
