@@ -2,6 +2,7 @@ import { db } from "@/server";
 import placeholder from "@/public/placeholder_small.jpg";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
+
 export default async function Products() {
   const products = await db.query.products.findMany({
     with: {
