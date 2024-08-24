@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import { deleteProduct } from "@/server/actions/delete-products";
 import { toast } from "sonner";
 import { useAction } from "next-safe-action/hook";
 import Link from "next/link";
@@ -25,6 +24,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ProductVariant } from "./product-variant";
+import { deleteProduct } from "@/server/actions/delete-products";
 
 type ProductColumn = {
   title: string;
@@ -41,7 +41,7 @@ const ActionCell = ({ row }: { row: Row<ProductColumn> }) => {
       if (data.error) toast.error(data.error);
     },
     onExecute: (data) => {
-      toast.loading("Deleteing Product");
+      toast.loading("Deleting Product");
     },
   });
   const product = row.original;
@@ -79,11 +79,11 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   {
     accessorKey: "variants",
-    header: "Varaints",
+    header: "Variants",
     cell: ({ row }) => {
       const variants = row.getValue("variants") as VariantsWithImagesTags[];
       return (
-        <div>
+        <div className="flex gap-2">
           {variants.map((variant) => (
             <div key={variant.id}>
               <TooltipProvider>
@@ -98,7 +98,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
                         className="w-5 h-5 rounded-full"
                         key={variant.id}
                         style={{ background: variant.color }}
-                      ></div>
+                      />
                     </ProductVariant>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -113,7 +113,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
               <TooltipTrigger asChild>
                 <span>
                   <ProductVariant editMode={false} productID={row.original.id}>
-                    <PlusCircle className="w-4 h-4" />
+                    <PlusCircle className="w-5 h-5" />
                   </ProductVariant>
                 </span>
               </TooltipTrigger>

@@ -48,7 +48,7 @@ export default function VariantImages() {
         name="variantImages"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Username</FormLabel>
+            <FormLabel>Variant Images</FormLabel>
             <FormControl>
               <UploadDropzone
                 className="ut-allowed-content:text-secondary-foreground ut-label:text-primary 

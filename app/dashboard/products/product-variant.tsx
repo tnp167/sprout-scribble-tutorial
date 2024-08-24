@@ -26,6 +26,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InputTags } from "./input-tags";
 import VariantImages from "./variant-images";
+import { useAction } from "next-safe-action/hook";
+import { createVariant } from "@/server/actions/create-variant";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
 export const ProductVariant = ({
   editMode,
@@ -51,12 +55,54 @@ export const ProductVariant = ({
     },
   });
 
+  const [open, setOpen] = useState(false);
+
+  const setEdit = () => {
+    if (!editMode) {
+      form.reset();
+      return;
+    }
+    if (editMode && variant) {
+      form.setValue("editMode", true);
+      form.setValue("id", variant.id);
+      form.setValue("productID", variant.productID);
+      form.setValue("productType", variant.productType);
+      form.setValue("color", variant.color);
+      form.setValue(
+        "tags",
+        variant.variantTags.map((tag) => tag.tag)
+      );
+      form.setValue(
+        "variantImages",
+        variant.variantImages.map((image) => ({
+          name: image.name,
+          size: image.size,
+          url: image.url,
+        }))
+      );
+    }
+  };
+
+  useEffect(() => {
+    setEdit();
+  }, []);
+
+  const { execute, status } = useAction(createVariant, {
+    onExecute() {
+      toast.loading("Creating variant", { duration: 500 });
+      setOpen(false);
+    },
+    onSuccess(data) {
+      if (data?.error) toast.error(data.error);
+      if (data?.success) toast.success(data.success);
+    },
+  });
   async function onSubmit(values: z.infer<typeof VariantSchema>) {
-    // execute(values);
+    execute(values);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-[640px] rounded-md">
         <DialogHeader>
@@ -104,12 +150,16 @@ export const ProductVariant = ({
               )}
             />
             <VariantImages />
-            {editMode && variant && (
-              <Button type="button">Delete Variant</Button>
-            )}
-            <Button type="submit">
-              {editMode ? "Update Variant" : "Create Variant"}
-            </Button>
+            <div className="flex gap-4 items-center justify-center">
+              {editMode && variant && (
+                <Button variant={"destructive"} type="button">
+                  Delete Variant
+                </Button>
+              )}
+              <Button type="submit">
+                {editMode ? "Update Variant" : "Create Variant"}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>
