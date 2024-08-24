@@ -168,6 +168,11 @@ export const ProductVariant = ({
                 <Button
                   variant={"destructive"}
                   type="button"
+                  disabled={
+                    variantAction.status === "executing" ||
+                    !form.formState.isValid ||
+                    !form.formState.isDirty
+                  }
                   onClick={(e) => {
                     e.preventDefault();
                     variantAction.execute({ id: variant.id });
@@ -176,7 +181,14 @@ export const ProductVariant = ({
                   Delete Variant
                 </Button>
               )}
-              <Button type="submit">
+              <Button
+                disabled={
+                  status === "executing" ||
+                  !form.formState.isValid ||
+                  !form.formState.isDirty
+                }
+                type="submit"
+              >
                 {editMode ? "Update Variant" : "Create Variant"}
               </Button>
             </div>

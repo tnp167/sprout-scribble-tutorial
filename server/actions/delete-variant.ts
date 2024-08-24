@@ -5,8 +5,16 @@ import { productVariants } from "../schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "..";
+import algoliasearch from "algoliasearch";
 
 const action = createSafeActionClient();
+
+const client = algoliasearch(
+  process.env.NEXT_PUBLIC_ALGOLIA_ID!,
+  process.env.ALGOLIA_ADMIN!
+);
+
+const algoliaIndex = client.initIndex("products");
 
 export const deleteVariant = action(
   z.object({ id: z.number() }),
@@ -17,6 +25,7 @@ export const deleteVariant = action(
         .where(eq(productVariants.id, id))
         .returning();
       revalidatePath("/dashboard/products");
+      algoliaIndex.deleteObject(deletedVariant[0].id.toString());
       return { success: `Delete ${deletedVariant[0].productType}` };
     } catch (error) {
       return { error: "Failed to delete variant" };
