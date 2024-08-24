@@ -24,6 +24,7 @@ import { z } from "zod";
 import { VariantSchema } from "@/types/variant-schema";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { InputTags } from "./input-tags";
 
 export default function ProductVariant({
   editMode,
@@ -59,10 +60,6 @@ export default function ProductVariant({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{editMode ? "Edit" : "Create"} your variant</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -98,7 +95,9 @@ export default function ProductVariant({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Variant Tags</FormLabel>
-                  <FormControl></FormControl>
+                  <FormControl>
+                    <InputTags {...field} onChange={(e) => field.onChange(e)} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
