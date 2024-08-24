@@ -30,6 +30,7 @@ import { useAction } from "next-safe-action/hook";
 import { createVariant } from "@/server/actions/create-variant";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
+import { deleteVariant } from "@/server/actions/delete-variant";
 
 export const ProductVariant = ({
   editMode,
@@ -97,6 +98,18 @@ export const ProductVariant = ({
       if (data?.success) toast.success(data.success);
     },
   });
+
+  const variantAction = useAction(deleteVariant, {
+    onExecute() {
+      toast.loading("Creating variant", { duration: 500 });
+      setOpen(false);
+    },
+    onSuccess(data) {
+      if (data?.error) toast.error(data.error);
+      if (data?.success) toast.success(data.success);
+    },
+  });
+
   async function onSubmit(values: z.infer<typeof VariantSchema>) {
     execute(values);
   }
@@ -152,7 +165,14 @@ export const ProductVariant = ({
             <VariantImages />
             <div className="flex gap-4 items-center justify-center">
               {editMode && variant && (
-                <Button variant={"destructive"} type="button">
+                <Button
+                  variant={"destructive"}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    variantAction.execute({ id: variant.id });
+                  }}
+                >
                   Delete Variant
                 </Button>
               )}
