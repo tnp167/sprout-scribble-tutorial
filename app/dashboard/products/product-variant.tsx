@@ -90,7 +90,7 @@ export const ProductVariant = ({
 
   const { execute, status } = useAction(createVariant, {
     onExecute() {
-      toast.loading("Creating variant", { duration: 500 });
+      toast.loading("Creating variant");
       setOpen(false);
     },
     onSuccess(data) {
@@ -101,7 +101,7 @@ export const ProductVariant = ({
 
   const variantAction = useAction(deleteVariant, {
     onExecute() {
-      toast.loading("Creating variant", { duration: 500 });
+      toast.loading("Creating variant");
       setOpen(false);
     },
     onSuccess(data) {
