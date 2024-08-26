@@ -24,9 +24,11 @@ export default function Stars({
           )}
         ></Star>
       ))}
-      <span className="text-secondary-foreground font-bold text-sm ml-2">
-        {totalReviews} reviews
-      </span>
+      {typeof totalReviews === "number" && totalReviews > 0 && (
+        <span className="text-secondary-foreground font-bold text-sm ml-2">
+          {totalReviews} reviews
+        </span>
+      )}
     </div>
   );
 }
