@@ -29,7 +29,7 @@ import { useAction } from "next-safe-action/hook";
 import { addReview } from "@/server/actions/add-review";
 import { toast } from "sonner";
 
-export default function ReviewForms() {
+export default function ReviewsForm() {
   const params = useSearchParams();
   const productID = Number(params.get("productID"));
 
