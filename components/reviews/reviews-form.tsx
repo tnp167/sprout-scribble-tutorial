@@ -25,6 +25,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAction } from "next-safe-action/hook";
+import { addReview } from "@/server/actions/add-review";
+import { toast } from "sonner";
 
 export default function ReviewForms() {
   const params = useSearchParams();
@@ -35,11 +38,25 @@ export default function ReviewForms() {
     defaultValues: {
       rating: 0,
       comment: "",
+      productID,
     },
   });
 
+  const { execute, status } = useAction(addReview, {
+    onSuccess({ error, success }) {
+      if (error) toast.error(error);
+      if (success) {
+        toast.success("Review Added");
+        form.reset();
+      }
+    },
+  });
   function onSubmit(values: z.infer<typeof reviewSchema>) {
-    console.log("Review");
+    execute({
+      comment: values.comment,
+      rating: values.rating,
+      productID,
+    });
   }
   return (
     <Popover>
@@ -93,13 +110,15 @@ export default function ReviewForms() {
                           <Star
                             key={value}
                             onClick={() => {
-                              form.setValue("rating", value);
+                              form.setValue("rating", value, {
+                                shouldValidate: true,
+                              });
                             }}
                             className={cn(
                               "text-primary bg-transparent transition-all duration-300 ease-in-out",
                               form.getValues("rating") >= value
-                                ? "text-primary"
-                                : "text-muted"
+                                ? "fill-primary"
+                                : "fill-muted"
                             )}
                           />
                         </motion.div>
@@ -109,8 +128,12 @@ export default function ReviewForms() {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">
-              Add Review
+            <Button
+              disabled={status === "executing"}
+              className="w-full"
+              type="submit"
+            >
+              {status === "executing" ? "Adding Review..." : "Add Review"}
             </Button>
           </form>
         </Form>
