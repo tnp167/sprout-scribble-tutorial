@@ -58,7 +58,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <h2 className="text-2xl font-bold">{variant?.product.title}</h2>
             <div>
               <ProductType variants={variant?.product.productVariants} />
-              <Stars rating={reviewAvg} totalReviews={variant.product.price} />
+              <Stars
+                rating={reviewAvg}
+                totalReviews={variant.product.reviews.length}
+              />
             </div>
             <Separator className="my-2" />
             <p className="text-2xl font-medium py-2">

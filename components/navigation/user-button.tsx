@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { LogOut, Moon, Settings, Sun, TruckIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Switch } from "../ui/switch";
@@ -33,11 +33,15 @@ export const UserButton = ({ user }: Session) => {
         return setChecked(false);
     }
   }
+
+  useEffect(() => {
+    setSwitchState();
+  }, []);
   if (user)
     return (
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
-          <Avatar>
+          <Avatar className="w-8 h-8">
             {user.image && user.name && (
               <AvatarImage
                 src={user.image}

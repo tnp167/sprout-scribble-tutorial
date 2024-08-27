@@ -4,20 +4,24 @@ import { LogIn } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import Logo from "./logo";
+import CartDrawer from "../cart/cart-drawer";
 const nav = async () => {
   const session = await auth();
 
   return (
     <header className="py-12">
       <nav>
-        <ul className="flex justify-between items-center">
-          <li>
+        <ul className="flex justify-between items-center md:gap-8 gap-4 ">
+          <li className="flex flex-1">
             <Link href="/" aria-label="sprout and scribble logo ">
               <Logo />
             </Link>
           </li>
+          <li className="relative flex items-center hover:bg-muted">
+            <CartDrawer />
+          </li>
           {!session ? (
-            <li>
+            <li className="flex">
               <Button asChild>
                 <Link className="flex gap-2" href="/auth/login">
                   <LogIn />
@@ -26,7 +30,7 @@ const nav = async () => {
               </Button>
             </li>
           ) : (
-            <li>
+            <li className="flex">
               <UserButton expires={session?.expires} user={session?.user} />
             </li>
           )}
