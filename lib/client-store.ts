@@ -10,6 +10,7 @@ export type CartItem = {
   image: string;
   id: number;
   variant: Variant;
+  price: number;
 };
 
 export type CartState = {
