@@ -119,7 +119,7 @@ export default function CartItems() {
           </Table>
         </div>
       )}
-      <motion.div className="flex items-center justify-center relative overflow-hidden">
+      <motion.div className="flex items-center justify-center relative overflow-hidden my-3">
         <span className="text-md">Total £</span>
         <AnimatePresence mode="popLayout">
           {priceInLetters.map((letter, index) => (

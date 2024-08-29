@@ -9,7 +9,7 @@ export default function CartMessage() {
   const { checkoutProgress, setCheckoutProgress } = useCartStore();
   return (
     <motion.div
-      className="bg-red-50 text-center"
+      className=" text-center"
       animate={{ opacity: 1, x: 0 }}
       initial={{ opacity: 0, x: 10 }}
     >
