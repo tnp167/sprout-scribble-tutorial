@@ -10,7 +10,6 @@ import { loadStripe } from "@stripe/stripe-js";
 
 const stripe = getStripe();
 
-console.log(stripe);
 export default function Payment() {
   const { cart } = useCartStore();
   const totalPrice = cart.reduce((acc, item) => {

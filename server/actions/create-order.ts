@@ -12,7 +12,7 @@ export const createOrder = action(
   createOrderSchema,
   async ({ products, status, total }) => {
     const user = await auth();
-    if (!user) return { error: "user not found" };
+    if (!user) return { error: "User not found" };
 
     const order = await db
       .insert(orders)
