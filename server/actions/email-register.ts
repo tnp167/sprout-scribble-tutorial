@@ -41,10 +41,10 @@ export const emailRegister = action(
 
     const verificationToken = await generateEmailVerificationToken(email);
 
-    // await sendVerificationEmail(
-    //   verificationToken[0].email,
-    //   verificationToken[0].token
-    // );
+    await sendVerificationEmail(
+      verificationToken[0].email,
+      verificationToken[0].token
+    );
 
     return { success: "Email Confirmation sent" };
   }

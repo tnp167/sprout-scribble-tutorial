@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import Logo from "./logo";
 import CartDrawer from "../cart/cart-drawer";
+import { revalidatePath } from "next/cache";
 const nav = async () => {
   const session = await auth();
 
@@ -13,7 +14,7 @@ const nav = async () => {
       <nav>
         <ul className="flex justify-between items-center md:gap-8 gap-4 ">
           <li className="flex flex-1">
-            <Link href="/" aria-label="sprout and scribble logo ">
+            <Link href="/" aria-label="sprout and scribble logo">
               <Logo />
             </Link>
           </li>
