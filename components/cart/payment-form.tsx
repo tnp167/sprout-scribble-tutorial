@@ -13,6 +13,7 @@ import { createPaymentIntent } from "@/server/actions/create-payment-intent";
 import { useAction } from "next-safe-action/hook";
 import { createOrder } from "@/server/actions/create-order";
 import { toast } from "sonner";
+import { boolean } from "drizzle-orm/pg-core";
 
 export default function PaymentForm({ totalPrice }: { totalPrice: number }) {
   const stripe = useStripe();
