@@ -3,6 +3,8 @@ import Image from "next/image";
 import { db } from "@/server";
 import Products from "@/components/products/products";
 
+export const revalidate = 60 * 60;
+
 export default async function Home() {
   const data = await db.query.productVariants.findMany({
     with: {

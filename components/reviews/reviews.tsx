@@ -12,14 +12,14 @@ export default async function Reviews({ productID }: { productID: number }) {
     orderBy: [desc(reviews.created)],
   });
   return (
-    <section className="py-8">
-      <h2 className="text-2xl font-bold mb-4">Product Reviews</h2>
+    <section className="py-4">
       <div className="flex gap-2 lg:gap-12 justify-stretch lg:fle-row flex-col">
         <div className="flex-1">
+          <h2 className="text-2xl font-bold mb-4">Product Reviews</h2>
+          <ReviewsForm />
           <Review reviews={data} />
         </div>
         <div className="flex flex-1 flex-col gap-2">
-          <ReviewsForm />
           <ReviewChart reviews={data} />
         </div>
       </div>
