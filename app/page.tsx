@@ -2,6 +2,7 @@ import getPosts from "@/server/actions/get-posts";
 import Image from "next/image";
 import { db } from "@/server";
 import Products from "@/components/products/products";
+import Algolia from "@/components/products/algolia";
 
 export const revalidate = 60 * 60;
 
@@ -16,6 +17,7 @@ export default async function Home() {
   });
   return (
     <main>
+      <Algolia />
       <Products variants={data} />
     </main>
   );
