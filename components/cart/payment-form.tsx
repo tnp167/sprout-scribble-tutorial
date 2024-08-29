@@ -10,14 +10,27 @@ import {
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { createPaymentIntent } from "@/server/actions/create-payment-intent";
+import { useAction } from "next-safe-action/hook";
+import { createOrder } from "@/server/actions/create-order";
+import { toast } from "sonner";
 
 export default function PaymentForm({ totalPrice }: { totalPrice: number }) {
   const stripe = useStripe();
   const elements = useElements();
-  const { cart } = useCartStore();
+  const { cart, setCheckoutProgress } = useCartStore();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const { execute } = useAction(createOrder, {
+    onSuccess: (data) => {
+      if (data.error) toast.error(data.error);
+      if (data.success) {
+        setIsLoading(false);
+        toast.success(data.success);
+        setCheckoutProgress("confirmation-page");
+      }
+    },
+  });
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -64,7 +77,15 @@ export default function PaymentForm({ totalPrice }: { totalPrice: number }) {
         return;
       } else {
         setIsLoading(false);
-        console.log("Save the order");
+        execute({
+          status: "pending",
+          total: totalPrice * 100,
+          products: cart.map((item) => ({
+            productID: item.id,
+            variantID: item.variant.variantID,
+            quantity: item.variant.quantity,
+          })),
+        });
       }
     }
   };
@@ -72,8 +93,11 @@ export default function PaymentForm({ totalPrice }: { totalPrice: number }) {
     <form onSubmit={handleSubmit}>
       <PaymentElement />
       <AddressElement options={{ mode: "shipping" }} />
-      <Button disabled={!stripe || !elements}>
-        <span>Pay now</span>
+      <Button
+        className="my-4 w-full"
+        disabled={!stripe || !elements || isLoading}
+      >
+        {isLoading ? "Processing" : "Pay now"}
       </Button>
     </form>
   );
