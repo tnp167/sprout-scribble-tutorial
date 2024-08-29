@@ -43,7 +43,7 @@ export default function Sales({ totalOrders }: { totalOrders: TotalOrders[] }) {
                 <TableRow className="font-medium" key={order.id}>
                   <TableCell>
                     {order.user.image && order.user.name ? (
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 w-32 items-center">
                         <Image
                           src={order.user.image}
                           width={25}
