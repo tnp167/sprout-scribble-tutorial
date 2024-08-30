@@ -1,12 +1,12 @@
 "use client";
 import { InstantSearchNext } from "react-instantsearch-nextjs";
 import { SearchBox, Hits } from "react-instantsearch";
-import { searchClient } from "@/lib/algolia-client";
 import Link from "next/link";
 import Image from "next/image";
 import { Card } from "../ui/card";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { searchClient } from "@/lib/algolia-client";
 
 export default function Algolia() {
   const [active, setActive] = useState(false);

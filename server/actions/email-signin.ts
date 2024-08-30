@@ -42,7 +42,7 @@ export const emailSignIn = action(
 
       //2FA
 
-      if (existingUser.twoFactorEnabled && existingUser.email) {
+      if (existingUser?.twoFactorEnabled && existingUser.email) {
         if (code) {
           const twoFactorToken = await getTwoFactorTokenByEmail(
             existingUser.email

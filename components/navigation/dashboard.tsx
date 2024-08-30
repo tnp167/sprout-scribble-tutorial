@@ -13,9 +13,9 @@ export default function DashboardNav({
   const pathname = usePathname();
   return (
     <nav className="py-2 overflow-auto mb-4">
-      <ul className="flex gap-6 font-xs font-bold">
-        {allLinks.map((link) => (
-          <AnimatePresence>
+      <ul className="flex gap-6 text-xs font-semibold ">
+        <AnimatePresence>
+          {allLinks.map((link) => (
             <motion.li whileTap={{ scale: 0.95 }} key={link.path}>
               <Link
                 className={cn(
@@ -28,16 +28,17 @@ export default function DashboardNav({
                 {link.label}
                 {pathname === link.path ? (
                   <motion.div
-                    className="h-[3px] w-full rounded full absolute bg-primary z-0 left-0 -bottom-1"
-                    initial={{ scale: 0.8 }}
+                    className="h-[2px] w-full rounded-full absolute bg-primary z-0 left-0 -bottom-1"
+                    initial={{ scale: 0.5 }}
                     animate={{ scale: 1 }}
                     layoutId="underline"
+                    transition={{ type: "spring", stiffness: 35 }}
                   />
                 ) : null}
               </Link>
             </motion.li>
-          </AnimatePresence>
-        ))}
+          ))}
+        </AnimatePresence>
       </ul>
     </nav>
   );

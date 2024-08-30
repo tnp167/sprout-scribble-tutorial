@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InputTags } from "./input-tags";
 import VariantImages from "./variant-images";
-import { useAction } from "next-safe-action/hook";
+import { useAction } from "next-safe-action/hooks";
 import { createVariant } from "@/server/actions/create-variant";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";

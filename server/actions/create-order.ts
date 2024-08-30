@@ -25,6 +25,7 @@ export const createOrder = action(
       .returning();
 
     const orderProducts = products.map(
+      //@ts-ignore
       async ({ productID, quantity, variantID }) => {
         const newOrderProduct = await db.insert(orderProduct).values({
           quantity,

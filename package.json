@@ -12,7 +12,7 @@
     "db:drop": "npx drizzle-kit drop"
   },
   "dependencies": {
-    "@algolia/autocomplete-js": "^1.17.4",
+    "@algolia/autocomplete-js": "^1.17.0",
     "@auth/core": "^0.34.2",
     "@auth/drizzle-adapter": "^1.4.2",
     "@hookform/resolvers": "^3.9.0",
@@ -37,7 +37,7 @@
     "@tiptap/react": "^2.6.5",
     "@tiptap/starter-kit": "^2.6.5",
     "@uploadthing/react": "^6.7.2",
-    "algoliasearch": "^4.24.0",
+    "algoliasearch": "^4.23.3",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

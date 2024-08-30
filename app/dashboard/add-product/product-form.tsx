@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { PoundSterling } from "lucide-react";
 import Tiptap from "./tiptap";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAction } from "next-safe-action/hook";
+import { useAction } from "next-safe-action/hooks";
 import { createProduct } from "@/server/actions/create-product";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
