@@ -217,7 +217,7 @@ export const reviewRelations = relations(reviews, ({ one }) => ({
 
 export const userRelations = relations(users, ({ many }) => ({
   reviews: many(reviews, { relationName: "user_reviews" }),
-  orders: many(users, { relationName: "user_orders" }),
+  orders: many(orders, { relationName: "user_orders" }),
 }));
 
 export const orders = pgTable("orders", {

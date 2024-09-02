@@ -69,9 +69,7 @@ export const emailSignIn = action(
       await signIn("credentials", {
         email,
         password,
-        redirect: false,
-        // Fix redirect bug
-        // redirectTo: "/",
+        redirectTo: "/",
       });
 
       return { success: "User Signed In!" };
